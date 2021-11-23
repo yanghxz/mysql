@@ -1,0 +1,12 @@
+[Unit]
+Description=php-fpm server daemon
+After=network.target 
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/php-fpm start
+ExecStop=/etc/init.d/php-fpm stop
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

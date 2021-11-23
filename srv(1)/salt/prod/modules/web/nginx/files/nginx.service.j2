@@ -1,0 +1,12 @@
+[Unit]
+Description=nginx server daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{ pillar['nginx_installdir'] }}/sbin/nginx  
+ExecStop={{ pillar['nginx_installdir'] }}/sbin/nginx  -s stop
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

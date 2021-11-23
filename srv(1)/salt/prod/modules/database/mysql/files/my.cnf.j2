@@ -1,0 +1,10 @@
+[mysqld]
+port = 3306
+datadir = {{ pillar['mysql_datadir'] }}
+basedir = {{ pillar['mysql_installdir'] }}
+socket = /tmp/mysql.sock
+pid-file = {{ pillar['mysql_datadir'] }}/mysql.pid
+user = mysql
+skip-name-resolve
+
+!includedir /etc/my.cnf.d

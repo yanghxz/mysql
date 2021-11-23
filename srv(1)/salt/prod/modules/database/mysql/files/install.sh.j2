@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /usr/src
+tar xf mysql-5.7.34-linux-glibc2.12-x86_64.tar.gz 
+ln -s /usr/src/mysql-5.7.34-linux-glibc2.12-x86_64 {{ pillar['mysql_installdir'] }}
+chown -R mysql.mysql {{ pillar['mysql_installdir'] }}
+{{ pillar['mysql_installdir'] }}/bin/mysqld --initialize-insecure --user=mysql --datadir="{{ pillar['mysql_datadir'] }}"
+echo "export PATH={{ pillar['mysql_installdir'] }}/bin:\$PATH" > /etc/profile.d/mysqld.sh

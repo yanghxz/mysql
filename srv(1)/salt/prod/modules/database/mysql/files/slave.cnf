@@ -1,0 +1,3 @@
+[mysqld]
+relay-log = myrela
+server-id = 2

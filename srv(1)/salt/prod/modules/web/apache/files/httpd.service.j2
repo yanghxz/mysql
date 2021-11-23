@@ -1,0 +1,12 @@
+[Unit]
+Description=httpd server daemon
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{ pillar['httpd_installdir'] }}/bin/apachectl start
+ExecStop={{ pillar['httpd_installdir'] }}/bin/apachectl stop
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
