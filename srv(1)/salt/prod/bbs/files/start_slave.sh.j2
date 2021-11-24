@@ -3,7 +3,7 @@
 mysql={{ pillar['mysql_installdir'] }}/bin/mysql
 master_ip=192.168.197.128
 repl_user=repl
-repl_password=repl123456!
+repl_password=repl123!
 log_file=$($mysql -u$repl_user -p$repl_password -h$master_ip -e "show master status"|grep "mysql-bin"|awk '{print $1}')
 log_pos=$($mysql -u$repl_user -p$repl_password -h$master_ip -e "show master status"|grep "mysql-bin"|awk '{print $2}')
 
