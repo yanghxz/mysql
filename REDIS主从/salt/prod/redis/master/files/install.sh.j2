@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd /usr/src/redis-6.2.6
+
+make MALLOC=libc USE_SYSTEMD=yes
+
+make install PREFIX=/usr/local/redis
