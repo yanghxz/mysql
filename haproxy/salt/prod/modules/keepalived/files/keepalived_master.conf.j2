@@ -1,0 +1,60 @@
+! Configuration File for keepalived
+
+global_defs {
+   router_id lb01
+}
+
+vrrp_script nginx_check {
+    script "/scripts/check_n.sh"
+    interval 1
+    weight -20
+}
+
+vrrp_instance VI_1 {
+    state MASTER
+    interface ens160
+    virtual_router_id 52
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass chenshunli
+    }
+    virtual_ipaddress {
+        {{ pillar['vip'] }}
+    }
+    track_script {
+        nginx_check
+    }
+    notify_master "/scripts/notify.sh master {{ pillar['vip'] }}"
+    notify_backup "/scripts/notify.sh backup {{ pillar['vip'] }}"
+}
+
+virtual_server {{ pillar['vip'] }} 80 {
+    delay_loop 6
+    lb_algo rr
+    lb_kind DR
+    persistence_timeout 50
+    protocol TCP
+
+    real_server {{ pillar['keepalived_master_ip'] }} 80 {
+        weight 1
+        TCP_CHECK {
+            connect_port 80
+            connect_timeout 3
+            nb_get_retry 3
+            delay_before_retry 3
+        }
+    }
+
+    real_server {{ pillar['keepalived_backup_ip'] }} 80 {
+        weight 1
+        TCP_CHECK {
+            connect_port 80
+            connect_timeout 3
+            nb_get_retry 3
+            delay_before_retry 3
+        }
+    }
+}
+
